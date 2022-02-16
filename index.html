@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rentalz App</title>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js" integrity="sha512-A2+khatRDWHUE2VUtN4xUTkr1nc4YfDBw9Sg3ea6x0aRPfpcYieDZji4D2edDHy/yF5NsYzP7kL8sSM8s5EqCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.createjs.com/1.0.0/preloadjs.min.js"></script>
+</head>
+
+<body class='' style="position: inherit;">
+    <div class="relative h-full w-full overflow-hidden">
+     <!-- Modal -->
+     <div class="fixed z-30 overflow-hidden top-0 h-screen w-full left-0 hidden" id="modal">
+        <div class="flex items-center justify-center pt-4 px-4 pb-20 text-center sm:block sm:p-0" style="min-height:100vh">
+          <div class="fixed inset-0 transition-opacity">
+            <div class=" absolute inset-0 bg-gray-900 opacity-70" onclick="toggleModal()"></div>
+          </div>
+          <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+          <div class="z-50 inline-block align-center bg-transparent rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-11/12 mx-auto sm:max-w-xl  sm:w-full"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-headline"
+            style="z-index: 99999;"
+            >
+            <div class="bg-transparent relative flex flex-col">
+                <div class="p-10 bg-transparent" style="background-color: rgba(110, 28, 88, 0.7);">
+                    <span class="tracking-widest text-2xl text-color-gradient font-semibold block">GET NOTIFIED</span>
+                    <span class="tracking-wide text-3xl sm:text-4xl mt-1 font-semibold text-white w-full block">Enter you email</span>
+                </div>
+                <div class="py-5 px-10 bg-white">
+                    <div class="mt-1 w-full sm:w-3/4 border-b truncate " style="border-color: rgba(110, 28, 88) ;">
+                        <input
+                            type="text"
+                            name="name" 
+                            id="email" 
+                            class="block w-full truncate border-0 border-b border-transparent bg-gray-50 focus:border-2 focus:ring-0 outline-none  text-lg"
+                            placeholder="">
+                    </div>
+                    <button
+                    type="button"
+                    class="mt-5 inline-flex items-center px-7 py-2 border border-transparent text-lg font-medium rounded-md shadow-sm text-white focus:outline-none outline-none"
+                    style="background-color: rgba(110, 28, 88)" onclick="toggleModal()">
+                        Subscribe
+                    </button>
+                </div>
+                <button type="button" class="absolute right-1 top-1 text-white" onclick="toggleModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                </button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <!--Nav-->
+    <nav id="header" class="w-screen sm:max-w-7xl fixed sm:sticky contender mx-auto w-full z-50 top-0 sm:top-2 text-white">
+        <div class="w-full  mx-auto flex flex-wrap items-center justify-between mt-0 py-4">
+            <div class="pl-4 flex items-center">
+                <a class="toggleColour text-white no-underline hover:no-underline font-normal text-xl lg:text-2xl font-semibold tracking-widest "
+                    href="#" style="letter-spacing: 0.2em;">
+                    RENTALZ.IO
+                </a>
+            </div>
+            <div class="block lg:hidden pr-4">
+                <button 
+                    class="menu-button flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                    <svg class="fill-current h-6 w-6 text-white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <title>Menu</title>
+                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="hidden sm:flex flex-grow border border-white mx-20">
+
+            </div>
+
+            <div class="w-full  lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20"
+                id="nav-content">
+                <ul class="list-reset lg:flex justify-end flex-1 items-center">
+                    <li class="mr-3">
+                        <a class="inline-block py-2 px-4  text-white  transform hover:scale-105 hover:underline hover:font-semibold "
+                            href="#updates" style="text-underline-position: under;">Updates </a>
+                    </li>
+                    <li class="mr-3">
+                        <a class="inline-block text-white  transform hover:scale-105  hover:underline hover:font-semibold py-2 px-4"
+                            style="text-underline-position: under;" href="#about">About </a>
+                    </li>
+                    <li class="mr-3">
+                        <a class="inline-block text-white  transform hover:scale-105  hover:underline hover:font-semibold py-2 px-4"
+                            style="text-underline-position: under;" href="#roadmap">Roadmap</a>
+                    </li>
+                    <li class="mr-3">
+                        <a class="inline-block text-white  transform hover:scale-105  hover:underline hover:font-semibold py-2 px-4"
+                            style="text-underline-position: under;" href="#mint">Mint</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- <hr class="border-b border-gray-100 opacity-25 my-0 py-0" /> -->
+        <ul class="flex flex-col mx-5 hidden space-y-7 pt-20" id='menu'>
+            <li onclick="handleMenuItemClick()"><a class="text-5xl" href="#updates">Updates</a></li>
+            <li onclick="handleMenuItemClick()"><a class="text-5xl" href="#about">About</a></li>
+            <li onclick="handleMenuItemClick()"><a class="text-5xl" href="#roadmap">Roadmap</a></li>
+            <li onclick="handleMenuItemClick()"><a class="text-5xl" href="#mint">Mint</a></li>
+        </ul>
+    </nav>
+
+    <section class=" sm:pt-10 sm:h-screen" id="section1">
+        <div class="pt-28 sm:content mx-auto w-screen sm:max-w-7xl">
+            <!--Hero-->
+            <div>
+                <div class=" px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+                    <div class="flex flex-col contender w-full justify-center items-center text-center ">
+                        <p
+                            class=" uppercase tracking-widest w-full text-2xl text-white font-extrabold  text-color-gradient ">
+                            Coming Soon</p>
+                        <h1 class="my-5 text-3xl sm:text-6xl font-extrabold leading-tight text-white bg-transparent  ">
+                            Get Notified To </br> Join The Exclusive <span
+                                class="text-color-gradient">Luxury</span></br> Lifestyle
+                            Community.
+                        </h1>
+
+                        <div class="mt-10 relative">
+                            <div class="magnetic group">
+                                <div class=" button-wrapper my-6 mb-20 transform  transition duration-300 ease-in-out">
+                                    <button
+                                        class=" mx-auto text-base lg:mx-0  rounded-lg  text-white font-normal p-3 px-10 shadow-lg focus:outline-none focus:shadow-outline  text-gray-900 text-lg tracking-widest "
+                                        style="background-color: #fef49d;" onclick="toggleModal()" >
+                                        Notify Me
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-10 sm:h-screen" id="updates">
+        <div class="mx-auto">
+            <!--Hero-->
+            <div class="px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center md:items-stretch justify-center">
+                <div
+                    class="fadeout-right-card w-full rounded-md  md:w-1/2 m-5 lg:w-1/4 px-4 transform hover:scale-105 ease-in-out transition duration-100 ease-in-out ">
+                    <div class="rounded-lg p-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"
+                            class="h-36 w-36 sm:h-44 sm:w-44 text-white" version="1.1" viewBox="0 0 700 700">
+                            <path d="M280,521.5c-1.5,0-2.8-0.4-4.1-0.9c-3.9-1.9-6-6.2-5-10.5l41.4-187l-91.7-34.5c-2.8-1.1-5-3.4-5.8-6.3s0-6,1.9-8.4
+                       L412.9,41.6c2.8-3.4,7.5-4.3,11.2-2.4c3.9,1.9,6,6.2,5,10.5l-41.4,187l91.7,34.5c2.8,1.1,5,3.4,5.8,6.3s0,6-1.9,8.4L287.1,518.4
+                       C285.2,520.4,282.6,521.6,280,521.5L280,521.5z M239.5,275.9l86.8,32.7c4.3,1.7,6.9,6.2,5.8,10.8l-34.9,157.9l163.1-193.2
+                       l-86.8-32.7c-4.3-1.7-6.9-6.2-5.8-10.8l34.9-157.9L239.5,275.9z" />
+                        </svg>
+                        <div class="border-2 border-white w-1/2 m-2"></div>
+                        <span
+                            class="  text-white  font-bold text-3xl sm:text-xl sm:text-4xl block mb-4 mt-4 text-color-gradient">Fast
+                            Moving
+                            Project</span>
+                        <p class=" text-white  text-body-color  pb-8  text-base text-xl sm:text-2xl tracking-widest  ">Be one
+                            of the first to join our fast growing community of 10,000+ members.</p>
+                    </div>
+                </div>
+                <div
+                    class="fadeout-right-card w-full rounded-md md:w-1/2 m-5 lg:w-1/4 px-4 transform hover:scale-105 ease-in-out transition duration-100 ease-in-out">
+                    <div class="rounded-lg p-5 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"
+                            class="h-36 w-36 sm:h-44 sm:w-44 text-white" version="1.1" viewBox="0 0 700 700">
+                            <path d="M273,268.2c8.9,3.8,18.1,5.5,27.2,5.5c27.3,0,53.3-16.1,64.7-42.8c7.3-17.3,7.5-36.3,0.5-53.7c-7-17.4-20.3-31-37.5-38.3
+                            c-35.5-15.1-76.7,1.6-91.9,37.3c-7.3,17.3-7.5,36.3-0.5,53.7C242.4,247.4,255.8,260.9,273,268.2L273,268.2z M263.4,193.4
+                            c-2.3,6.6-3.6,13.1-4.1,19.3l-18.8-8c-0.1-6.7,0.9-13.3,3-19.8L263.4,193.4z M360.2,200.8c0.3,7.2-0.6,14.5-2.9,21.5l-19.8-8.4
+                            c2.6-7.2,4.1-14.2,4.7-20.8L360.2,200.8z M328.2,210l-21.6-9.2l8.2-19.3l17.6,7.5C332,195.5,330.7,202.6,328.2,210L328.2,210z
+                             M269.6,228.1l12.2,5.2l-6.8,16.1C272.9,243.9,270.6,236.6,269.6,228.1L269.6,228.1z M291.1,237.2l13.1,5.6
+                            c-7.4,5.6-14.8,9.3-20.3,11.5L291.1,237.2z M295,227.9l7.6-17.8l21.6,9.2c-3.3,6.3-7.3,11.6-11.6,16.1L295,227.9z M318.7,172.2
+                            l7.9-18.7c1.8,4.4,4.7,13.2,5.6,24.4L318.7,172.2z M309.4,168.3l-12.7-5.4c7.9-6.5,15.6-10.4,20.2-12.4L309.4,168.3z M305.5,177.5
+                            l-8.2,19.3l-20.8-8.8c3.5-6.9,7.8-12.7,12.2-17.6L305.5,177.5z M293.3,206.1l-7.6,17.8l-16.6-7.1c0.2-6.2,1.2-12.9,3.5-19.6
+                            L293.3,206.1z M244.8,226.2c-1.3-3.3-2.3-6.6-3-10l17.3,7.3c0.6,11.6,3.5,21.6,6.3,28.9C256.2,245.9,249.1,236.9,244.8,226.2
+                            L244.8,226.2z M289.8,262.7c7.1-3,16.3-7.9,25-15.5l17.3,7.3C319.6,262.2,304.6,265.4,289.8,262.7L289.8,262.7z M341.2,247.5
+                            l-18.8-8c4.1-4.7,7.9-10.1,11-16.4l19.9,8.4C350.1,237.7,346,243,341.2,247.5L341.2,247.5z M356,181.1c1.1,2.6,1.9,5.3,2.5,8
+                            l-15.9-6.8c-0.2-10.1-2.1-18.7-4-25.1C346.2,163.5,352.2,171.6,356,181.1L356,181.1z M300.6,143.6c2.2,0,4.3,0.1,6.5,0.4
+                            c-5.9,3-13.4,7.7-20.7,14.5l-15.9-6.8C279.5,146.4,289.9,143.6,300.6,143.6L300.6,143.6z M260.8,158.6l18.1,7.7
+                            c-4.3,5-8.3,11-11.6,17.8l-19.9-8.4C250.9,169.1,255.4,163.3,260.8,158.6z" />
+                            <path d="M198.8,274.9l119.3,51.5c0.6,0.3,1.3,0.4,2,0.4c1.9,0,3.8-1.1,4.6-3c1.1-2.6-0.1-5.5-2.6-6.6l-119.3-51.5
+                            c-2.6-1.1-5.5,0.1-6.6,2.6C195.1,270.8,196.3,273.8,198.8,274.9L198.8,274.9z" />
+                            <path d="M303,359c1.9,0,3.8-1.1,4.6-3c1.1-2.6-0.1-5.5-2.6-6.6l-119.3-51.5c-2.6-1.1-5.5,0.1-6.6,2.6c-1.1,2.6,0.1,5.5,2.6,6.6
+                            L301,358.6C301.7,358.9,302.4,359,303,359L303,359z" />
+                            <path d="M573.5,463c0.9-1.2,1.2-2.7,1-4.2l-49.2-319.8c-0.5-3.1-3.4-5.2-6.4-4.7l-85.7,13.2c-0.1-0.2-0.2-0.5-0.3-0.7
+                            c-3.5-8.9-10.3-15.8-19-19.6L250.5,56.5c-1.4-0.6-2.9-0.6-4.3-0.1c-1.4,0.5-2.5,1.6-3.1,3L127.2,327.8c-1.2,2.8,0.1,6.1,2.9,7.4
+                            l163.5,70.6c1.4,0.6,2.9,1.1,4.4,1.5l14.1,91.9c0.4,2.8,2.8,4.8,5.5,4.8c0.3,0,0.6,0,0.9-0.1l251.3-38.7
+                            C571.4,465,572.7,464.2,573.5,463L573.5,463z M139.7,327.1l111.5-258l158.4,68.4c6,2.6,10.6,7.4,13.1,13.5
+                            c2.4,6.1,2.3,12.7-0.3,18.8l-92.1,213.1c-5.4,12.4-19.8,18.1-32.2,12.8L139.7,327.1z M318.7,467.7c2.8-0.3,7.7-1,14-2.1
+                            c3-0.6,5.1-3.5,4.5-6.5c-0.6-3-3.5-5.1-6.5-4.5c-6.4,1.2-11.2,1.8-13.7,2.1l-7.4-48.1c13.2-0.7,25.5-8.5,31-21.4l43.1-99.7
+                            c6.5,37,43.9,51.1,44,51.1c14.1,6.6,25.4,12.8,34.6,19.1c-0.4,0.9-0.7,1.7-1,2.6c-1.2,2.9,0.2,6.1,3.1,7.3c0.7,0.3,1.4,0.4,2.1,0.4
+                            c2.2,0,4.2-1.3,5.1-3.4c1.9,1.5,3.7,3.1,5.4,4.7c28.8,26.8,36.3,64.8,37.4,93.1l-192,29.5L318.7,467.7z M525.5,460.7
+                            c-1.3-30.3-9.8-70.7-40.9-99.6c-2.7-2.5-5.6-5-8.8-7.4c0.6-1.6,1.2-3.2,1.7-4.6c1-2.9-0.5-6.1-3.4-7.2c-2.9-1.1-6.1,0.5-7.2,3.4
+                            c-0.2,0.5-0.4,1.1-0.6,1.7c-9.4-6.2-20.6-12.3-34.4-18.7c-2-0.8-49.6-18.9-35.4-70.6l36.1-83.5c2.2-5,3.1-10.3,2.9-15.6l79.6-12.2
+                            l10.1,65.4c-0.4,0.3-0.9,0.7-1.2,1.1c-1.7,2.4-3.3,4.8-4.8,7.1c-1.7,2.6-1,6,1.5,7.8c1,0.6,2,1,3.1,1c1.3,0,2.7-0.5,3.7-1.4
+                            l35,227.7L525.5,460.7z" />
+                            <path
+                                d="M460,377.2c-2.7-1.5-6.1-0.6-7.6,2.1c-2.5,4.5-5.4,8.9-8.6,13c-1.9,2.5-1.4,6,1.1,7.8c1,0.8,2.2,1.1,3.4,1.1
+                            c1.7,0,3.4-0.8,4.5-2.2c3.4-4.5,6.6-9.3,9.4-14.2C463.7,382.2,462.7,378.7,460,377.2L460,377.2z" />
+                            <path
+                                d="M515,236.5c-2.6-1.7-6.1-0.9-7.7,1.7c-3.3,5.2-6.1,9.8-8.6,14.1c-1.6,2.7-0.7,6.1,2,7.7c0.9,0.5,1.9,0.8,2.8,0.8
+                            c1.9,0,3.8-1,4.8-2.8c2.4-4.1,5.2-8.7,8.4-13.7C518.4,241.6,517.6,238.2,515,236.5L515,236.5z" />
+                            <path
+                                d="M430,407.9c-3.7,3.5-7.7,7-12,10.2c-2.5,1.9-2.9,5.4-1.1,7.8c1.1,1.4,2.8,2.2,4.5,2.2c1.2,0,2.4-0.4,3.4-1.1
+                            c4.6-3.5,8.9-7.2,12.9-11c2.2-2.1,2.3-5.7,0.2-7.9C435.7,405.8,432.2,405.7,430,407.9L430,407.9z" />
+                            <path
+                                d="M495.7,269.2c-2.8-1.3-6.1-0.1-7.4,2.8c-2.5,5.6-4.5,10.7-6,16c-0.9,3,0.8,6.1,3.8,6.9c0.5,0.2,1.1,0.2,1.6,0.2
+                            c2.4,0,4.7-1.6,5.4-4c1.4-4.8,3.1-9.4,5.4-14.5C499.7,273.9,498.5,270.5,495.7,269.2L495.7,269.2z" />
+                            <path d="M484,305.2c-3-0.6-6,1.3-6.6,4.3c-0.8,3.8-2,9-3.8,15.5c-0.8,3,0.9,6.1,3.9,6.9c0.5,0.1,1,0.2,1.5,0.2
+                            c2.4,0,4.7-1.6,5.4-4.1c1.5-5.3,2.7-10.3,4-16.2C489,308.8,487,305.9,484,305.2L484,305.2z" />
+                            <path d="M366.7,445c-5,1.7-10.1,3.4-15.2,4.8c-3,0.8-4.7,3.9-3.9,6.9c0.7,2.5,2.9,4.1,5.4,4.1c0.5,0,1-0.1,1.5-0.2
+                            c5.4-1.5,10.8-3.2,16-5c2.9-1,4.5-4.2,3.4-7.1C372.8,445.5,369.6,444,366.7,445L366.7,445z" />
+                            <path
+                                d="M400.4,429.7c-4.5,2.6-9.2,5-14.1,7.3c-2.8,1.3-4,4.6-2.7,7.4c1,2,3,3.2,5.1,3.2c0.8,0,1.6-0.2,2.4-0.5
+                            c5.1-2.4,10.2-5,14.9-7.8c2.7-1.5,3.6-5,2.1-7.6C406.5,429.1,403.1,428.1,400.4,429.7L400.4,429.7z" />
+                        </svg>
+                        <div class="border-2 border-white w-1/2 my-2"></div>
+                        <span
+                            class=" text-white  font-bold text-3xl sm:text-xl sm:text-4xl block mb-4 mt-4 text-color-gradient">Elite
+                            Travel</span>
+                        <p class=" text-white  text-body-color  pb-8 text-base text-xl sm:text-2xl tracking-widest  ">
+                            Experience exclusive supercars and luxury real estate while you travel.</p>
+                    </div>
+                </div>
+                <div
+                    class="fadeout-right-card rounded-md w-full md:w-1/2 m-5 lg:w-1/4 px-4 transform hover:scale-105 ease-in-out transition duration-100 ease-in-out">
+                    <div class="rounded-lg  p-5 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"
+                            class="h-36 w-36 sm:h-44 sm:w-44 text-white" version="1.1" viewBox="0 0 700 700">
+                            <path d="M436.5,204.8v-35.5c0-1.3,0-2.6-0.1-3.9c0-0.3,0-0.8-0.1-1.1c-0.1-1.1-0.1-2.1-0.2-3.2c0-0.3,0-0.5-0.1-0.9
+	c-0.1-1.3-0.3-2.6-0.5-3.9c0-0.1,0-0.2-0.1-0.3l-0.7-3.6c0-0.2-0.1-0.5-0.1-0.8c-0.2-1.2-0.5-2.4-0.9-3.6c0-0.1,0-0.2-0.1-0.2
+	c-0.3-1.3-0.8-2.6-1.1-3.9c0-0.1,0-0.1-0.1-0.2c-0.3-1.2-0.8-2.3-1.2-3.5c-0.1-0.2-0.2-0.5-0.2-0.8c-0.4-1.1-0.8-2.1-1.2-3.1
+	c-0.1-0.2-0.1-0.4-0.2-0.7c-0.4-1.1-1-2.3-1.5-3.4c-0.2-0.4-0.4-1-0.8-1.4c-0.3-0.5-0.5-1.1-0.9-1.6c-0.3-0.7-0.8-1.4-1.1-2.1
+	c-0.1-0.2-0.2-0.4-0.3-0.5c-8-13.8-19.6-25.3-33.6-32.9c-0.1-0.1-0.3-0.2-0.5-0.3c-3.6-2-7.2-3.6-11-4.9c-0.1,0-0.2-0.1-0.3-0.1
+	c-1.2-0.4-2.4-0.9-3.6-1.2c-0.3-0.1-0.8-0.2-1.1-0.3l-2.3-0.7c-0.7-0.2-1.2-0.3-1.9-0.4c-0.9-0.2-1.6-0.4-2.5-0.5
+	c-0.7-0.1-1.4-0.3-2.1-0.4c-0.4-0.1-0.9-0.1-1.3-0.2c-1.1-0.2-2.2-0.3-3.3-0.5c-0.5-0.1-1.1-0.1-1.6-0.2c-0.7-0.1-1.2-0.1-1.9-0.2
+	c-1.1-0.1-2.1-0.2-3.2-0.2c-0.4,0-0.8,0-1.2-0.1c-1.2,0-2.4-0.1-3.5-0.1h-0.2h-0.1h-0.2c-1.2,0-2.4,0-3.5,0.1c-0.4,0-0.8,0-1.2,0.1
+	c-1.1,0.1-2.1,0.1-3.2,0.2c-0.7,0.1-1.2,0.1-1.9,0.2c-0.5,0.1-1.1,0.1-1.6,0.2c-1.1,0.1-2.2,0.3-3.3,0.5c-0.4,0.1-0.9,0.1-1.3,0.2
+	c-0.7,0.1-1.4,0.2-2.1,0.4c-0.9,0.2-1.6,0.3-2.5,0.5c-0.7,0.1-1.2,0.3-1.9,0.4l-2.3,0.7c-0.3,0.1-0.8,0.2-1.1,0.3
+	c-1.2,0.3-2.4,0.8-3.6,1.2c-0.1,0-0.2,0.1-0.3,0.1c-3.8,1.4-7.4,3.1-11,4.9c-0.2,0.1-0.3,0.2-0.5,0.3c-14,7.7-25.6,19.1-33.6,32.9
+	c-0.1,0.2-0.2,0.4-0.3,0.5c-0.4,0.7-0.8,1.4-1.1,2.1c-0.3,0.5-0.5,1.1-0.9,1.6c-0.2,0.4-0.4,1-0.8,1.4c-0.5,1.1-1.1,2.2-1.5,3.4
+	c-0.1,0.2-0.2,0.4-0.2,0.7c-0.4,1-0.9,2.1-1.2,3.1c-0.1,0.2-0.2,0.5-0.2,0.8c-0.4,1.2-0.8,2.3-1.2,3.5c0,0.1,0,0.1-0.1,0.2
+	c-0.4,1.3-0.8,2.6-1.1,3.9c0,0.1,0,0.2-0.1,0.2c-0.3,1.2-0.5,2.4-0.9,3.6c-0.1,0.2-0.1,0.5-0.1,0.8l-0.7,3.6c0,0.1,0,0.2-0.1,0.3
+	c-0.2,1.3-0.3,2.6-0.5,3.9c0,0.3,0,0.5-0.1,0.9c-0.1,1.1-0.2,2.1-0.2,3.2c0,0.3,0,0.8-0.1,1.1c-0.1,1.3-0.1,2.6-0.1,3.9v35.5
+	c-16.1,0.2-29,13.3-29,29.4v143.6v1.5c0.3,7,3.2,13.2,7.4,18.2l0.8,0.8c0.1,0.1,0.2,0.2,0.3,0.4c0.1,0.1,0.2,0.2,0.4,0.3l0.8,0.8
+	c4.8,4.4,11.2,7.1,18.2,7.4h1.5h172.1h1.5c7-0.3,13.2-3.2,18.2-7.4l2.3-2.3c4.4-4.8,7.1-11.2,7.4-18.2v-1.5V234.2
+	C465.5,218.1,452.6,205,436.5,204.8L436.5,204.8z M251.1,234.2c0-7.1,5.8-13,13-13H436c7.2,0,13,5.9,13,13v24H251.1L251.1,234.2z
+	 M382.8,169.2v35.4h-65.5v-35.4c0-18,14.7-32.8,32.8-32.8C368.2,136.4,382.8,151.2,382.8,169.2L382.8,169.2z M316.5,107.7
+	c0.1-0.1,0.2-0.1,0.4-0.2c4.5-2.4,9.1-4.3,13.9-5.7c2.1-0.5,4-1.1,6.1-1.4c0.1,0,0.3,0,0.4-0.1c1.1-0.2,2.2-0.3,3.3-0.5
+	c0.3,0,0.8-0.1,1.1-0.1c0.5-0.1,1.1-0.1,1.5-0.2c0.9-0.1,1.6-0.1,2.5-0.2h1c1,0,1.9-0.1,2.8-0.1h0.2h0.2c1,0,1.9,0,2.8,0.1h1
+	c0.9,0,1.6,0.1,2.5,0.2c0.5,0,1.1,0.1,1.5,0.2c0.3,0,0.8,0.1,1.1,0.1c1.1,0.1,2.2,0.3,3.3,0.5c0.1,0,0.3,0,0.4,0.1
+	c2.1,0.4,4.2,0.9,6.1,1.4c4.8,1.4,9.5,3.3,13.9,5.7c0.1,0.1,0.2,0.1,0.4,0.2c9.7,5.2,17.9,12.8,24.2,21.9c0.1,0.2,0.3,0.4,0.4,0.8
+	c7.8,11.5,11.8,24.9,11.8,38.9v35.4H399v-35.4c0-27.1-22.1-49.2-49.2-49.2h-0.1c-27.1,0-49.2,22.1-49.2,49.2v35.4h-20.7v-35.4
+	c0-14,4-27.5,11.8-38.9c0.1-0.2,0.3-0.4,0.4-0.8C298.6,120.5,306.9,113,316.5,107.7L316.5,107.7z M371.8,390.8H264.2
+	c-7.2,0-13.1-5.8-13-13V274.5H449v103.2c0.1,7.2-5.8,13-13,13H371.8z" />
+                            <path d="M350,294.7c-15,0-27.2,12.1-27.2,27.2c0,12.1,8,22.4,19,25.9v15.3c0,4.5,3.7,8.2,8.2,8.2s8.2-3.7,8.2-8.2v-15.3
+	c10.9-3.5,19-13.8,19-25.9C377.2,306.9,365,294.7,350,294.7L350,294.7z M350,332.7c-5.9,0-10.8-4.8-10.8-10.8s4.8-10.8,10.8-10.8
+	c5.9,0,10.8,4.8,10.8,10.8S355.9,332.7,350,332.7z" />
+                            <path d="M560.2,208.9c-2.2,0-4.3,0.9-5.8,2.4l-33.1,33.1h-29.8c-4.5,0-8.2,3.7-8.2,8.2c0,4.5,3.7,8.2,8.2,8.2h33.1
+	c2.2,0,4.3-0.9,5.8-2.4l33.1-33.1h16c3.4,10.3,13.1,17.6,24.5,17.6c14.2,0,25.8-11.6,25.8-25.8s-11.6-25.8-25.8-25.8
+	c-11.4,0-21.1,7.4-24.5,17.6L560.2,208.9z M604.2,207.6c5.2,0,9.4,4.3,9.4,9.4s-4.3,9.4-9.4,9.4s-9.4-4.3-9.4-9.4
+	S598.9,207.6,604.2,207.6z" />
+                            <path d="M604.2,319.8c-11.4,0-21.1,7.4-24.5,17.6h-16l-33.2-33.1c-1.5-1.5-3.6-2.4-5.8-2.4h-33.1c-4.5,0-8.2,3.7-8.2,8.2
+	s3.7,8.2,8.2,8.2h29.8l33.1,33.1c1.5,1.5,3.6,2.4,5.8,2.4h19.4c3.4,10.3,13.1,17.6,24.5,17.6c14.2,0,25.8-11.6,25.8-25.8
+	S618.4,319.8,604.2,319.8L604.2,319.8z M604.2,355.1c-5.2,0-9.4-4.3-9.4-9.4s4.3-9.4,9.4-9.4s9.4,4.3,9.4,9.4
+	S609.3,355.1,604.2,355.1z" />
+                            <path d="M208.4,301.9h-33c-2.2,0-4.3,0.9-5.8,2.4l-33.1,33.1H95.9c-4.5,0-8.2,3.7-8.2,8.2s3.7,8.2,8.2,8.2h43.9
+	c2.2,0,4.3-0.9,5.8-2.4l33.1-33.1h29.8c4.5,0,8.2-3.7,8.2-8.2S213,301.9,208.4,301.9L208.4,301.9z" />
+                            <path d="M111.1,168.9h58.4l33.1,33.1c1.6,1.6,3.7,2.4,5.8,2.4s4.2-0.8,5.8-2.4c3.2-3.2,3.2-8.4,0-11.6l-35.5-35.5
+	c-1.5-1.5-3.6-2.4-5.8-2.4h-61.8c-4.5,0-8.2,3.7-8.2,8.2S106.6,168.9,111.1,168.9L111.1,168.9z" />
+                            <path d="M120.4,261h88c4.5,0,8.2-3.7,8.2-8.2s-3.7-8.2-8.2-8.2h-88C117,234.3,107.3,227,95.9,227C81.6,226.8,70,238.4,70,252.8
+	c0,14.2,11.6,25.8,25.8,25.8C107.3,278.6,116.9,271.1,120.4,261L120.4,261z M86.4,252.8c0-5.2,4.3-9.4,9.4-9.4
+	c5.2,0,9.4,4.3,9.4,9.4c0,5.2-4.3,9.4-9.4,9.4S86.4,257.9,86.4,252.8L86.4,252.8z" />
+                            <path d="M215.9,404.8L195,425.7c-1.5,1.5-2.4,3.6-2.4,5.8v52.6c-10.3,3.4-17.6,13.1-17.6,24.5c0,14.2,11.6,25.8,25.8,25.8
+	s25.8-11.6,25.8-25.8c0-11.4-7.4-21.1-17.6-24.5v-49.2l18.5-18.5c3.2-3.2,3.2-8.4,0-11.6C224.2,401.6,219.1,401.6,215.9,404.8
+	L215.9,404.8z M210.2,508.6c0,5.2-4.3,9.4-9.4,9.4c-5.2,0-9.4-4.3-9.4-9.4s4.3-9.4,9.4-9.4S210.2,503.3,210.2,508.6z" />
+                            <path d="M488.1,404.8c-3.2-3.2-8.4-3.2-11.6,0s-3.2,8.4,0,11.6l18.5,18.5v73.7c0,4.5,3.7,8.2,8.2,8.2s8.2-3.7,8.2-8.2v-77.1
+	c0-2.2-0.9-4.3-2.4-5.8L488.1,404.8z" />
+                            <path d="M482.3,141.8c2.1,0,4.2-0.8,5.8-2.4l20.9-20.9c1.5-1.5,2.4-3.6,2.4-5.8V75.9c10.3-3.4,17.6-13.1,17.6-24.5
+	c0-14.2-11.6-25.8-25.8-25.8s-25.9,11.6-25.9,25.8c0,11.4,7.4,21.1,17.6,24.5v33.5l-18.5,18.5c-3.2,3.2-3.2,8.4,0,11.6
+	C478.2,141,480.3,141.7,482.3,141.8L482.3,141.8z M493.7,51.4c0-5.2,4.3-9.4,9.4-9.4c5.2,0,9.4,4.3,9.4,9.4s-4.3,9.4-9.4,9.4
+	S493.7,56.7,493.7,51.4L493.7,51.4z" />
+                            <path d="M209,109.4V48.1c0-4.5-3.7-8.2-8.2-8.2s-8.2,3.7-8.2,8.2v64.6c0,2.2,0.9,4.3,2.4,5.8l20.9,20.9c1.6,1.6,3.7,2.4,5.8,2.4
+	s4.2-0.8,5.8-2.4c3.2-3.2,3.2-8.4,0-11.6L209,109.4z" />
+                            <path d="M482.3,193.2h36.7c2.2,0,4.3-0.9,5.8-2.4l52.5-52.5c1.5-1.5,2.4-3.6,2.4-5.8V91c0-4.5-3.7-8.2-8.2-8.2s-8.2,3.7-8.2,8.2
+	v38.1l-47.7,47.7h-33.4c-4.5,0-8.2,3.7-8.2,8.2S477.9,193.2,482.3,193.2L482.3,193.2z" />
+                            <path d="M586.5,404.2h-30.2l-52.8-52.8c-3.2-3.2-8.4-3.2-11.6,0s-3.2,8.4,0,11.6l55.2,55.2c1.5,1.5,3.6,2.4,5.8,2.4h33.6
+	c4.5,0,8.2-3.7,8.2-8.2S591,404.2,586.5,404.2L586.5,404.2z" />
+                            <path d="M181.7,374.3h26.7c4.5,0,8.2-3.7,8.2-8.2s-3.7-8.2-8.2-8.2h-30.1c-2.2,0-4.3,0.9-5.8,2.4l-50.1,50.1
+	c-3.4-1.6-7.2-2.5-11.3-2.5c-14.2,0-25.8,11.6-25.8,25.8s11.6,25.8,25.8,25.8s25.8-11.6,25.8-25.8c0-4.3-1.1-8.3-2.8-11.8
+	L181.7,374.3z M111.1,443.1c-5.2,0-9.4-4.3-9.4-9.4c0-5.2,4.3-9.4,9.4-9.4c5.2,0,9.4,4.3,9.4,9.4
+	C120.6,438.9,116.4,443.1,111.1,443.1z" />
+                            <path d="M397,437.6H303c-14.5,0-26.5,11.9-26.5,26.5s11.9,26.5,26.5,26.5H397c14.5,0,26.5-11.9,26.5-26.5S411.6,437.6,397,437.6
+	L397,437.6z M397,474.1H303c-5.6,0-10.1-4.5-10.1-10.1S297.4,454,303,454H397c5.6,0,10.1,4.5,10.1,10.1S402.5,474.1,397,474.1
+	L397,474.1z" />
+                        </svg>
+                        <div class="border-2 border-white w-1/2 my-2"></div>
+                        <span
+                            class="  text-white  font-bold text-3xl sm:text-xl sm:text-4xl block mb-4 mt-4 text-color-gradient">Exclusive
+                            Access</span>
+                        <p class=" text-white  text-body-color  pb-8  text-base text-xl sm:text-2xl tracking-widest">
+                            Our NFT is your VIP pass for exclusive luxuary lifestyle.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-10 sm:h-screen" id="about">
+        <div class="container max-w-7xl mx-auto">
+            <!--Hero-->
+            <div class="px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center justify-center">
+                <div class="w-full md:w-1/2 lg:w-1/2 px-4 h-100 w-100 relative">
+                    <div class="text-6xl">
+                        <img class="about-images" style="height: 600px;" src="https://sf-5.storage.dev/public/app/blue_lambo.jpg" />
+                        <span class="absolute h-14 w-14 font-bold text-3xl sm:text-6xl text-white -bottom-20 sm:right-20 sm:top-32 font-extrabold"> About
+                            Rentalz.io</span>
+                    </div>
+
+                    <div class="magnetic absolute right-24  sm:right-24 sm:top-24 animation-icon-wrapper"  style="padding: 500px;">
+                        <div class=" absolute right-4 top-32 sm:top-72 h-20 w-20 sm:h-28 sm:w-28 border-2 cursor-pointer border-white rounded-full flex justify-center items-center "
+                            onclick="aboutToggle()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white hidden" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" id='show-about'>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" id='hide-about'>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full mt-36 sm:mt-72  md:w-1/2 lg:w-1/2 px-4" id='about-info-container'>
+                    <div class="sm:ml-10 transition duration-300 ease-in-out transform opacity-0 -translate-x-10 opacity-and-translate"
+                        id="about-paragraph" data-animation="slideInRight">
+                        <p class="text-white text-body-color pb-8  text-md w-full text-left sm:w-3/5 main">
+                            The only NFT project that gets you exclusive access to a collection of high-end luxury cars,
+                            real estate, and an amazing community.
+                        </p>
+
+                        <span class="inline-block mt-6 transform hover:scale-105 transition  duration-300 ease-in-out">
+                            <button
+                                class=" mx-auto text-base lg:mx-0  rounded-lg  text-white font-normal bg-white p-3 px-10 shadow-lg focus:outline-none focus:shadow-outline  text-gray-900 text-lg tracking-widest "
+                                onclick="toggleModal()">
+                                Notify Me
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-10 sm:h-screen transition-all sm:mt-0" id="mint">
+        <div class="container max-w-7xl mx-auto">
+            <div class="px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center justify-center">
+                <div class="w-full md:w-1/2 lg:w-1/2 px-4 h-100 w-100 relative">
+                    <div class="text-6xl">
+                        <img class="about-images" style="height: 600px;" src="https://images.unsplash.com/photo-1580654712603-eb43273aff33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80" />
+                        <span class="absolute h-14 text-3xl sm:text-6xl w-auto font-bold  text-white -bottom-20 sm:right-20 sm:top-32 font-extrabold">
+                            Mint</br>
+                            Your NFT</span>
+                    </div>
+                    <div class="magnetic absolute right-24  sm:right-24 sm:top-24 " style="padding: 500px;">
+                        <div class=" absolute right-4 top-32 sm:top-72 h-20 w-20 sm:h-28 sm:w-28 border-2 cursor-pointer border-white rounded-full flex justify-center items-center"
+                            onclick="mintToggle()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white hidden" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" id='show-mint'>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white " fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" id='hide-mint'>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full mt-36 sm:mt-72 md:w-1/2 lg:w-1/2 px-4" id='mint-info-container'>
+                    <div class="sm:ml-10 transition duration-300 ease-in-out transform opacity-0 -translate-x-10 opacity-and-translate"
+                        id="mint-paragraph" data-animation="slideInRight">
+                        <p class="text-white text-body-color pb-8  text-md sm:w-3/5">You can now mint your own NFTs that
+                            unlock your exclusive access to our community.</p>
+                        <span class=" inline-block mt-6 transform transition hover:scale-105 duration-300 ease-in-out">
+                            <button
+                                class=" mx-auto text-base lg:mx-0  rounded-lg  text-white font-normal bg-white p-3 px-10 shadow-lg focus:outline-none focus:shadow-outline  text-gray-900 text-lg tracking-widest "
+                                onclick="toggleModal()">
+                                Notify Me
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sm:mt-10 sm:pt-10 sm:h-screen sm:pb-32 w-screen sm:max-w-7xl mx-auto px-7 relative" id="roadmap">
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div class="w-full h-full">
+            <div class="mx-auto py-12 w-full h-full lg:px-8 ">
+            <div class=" h-full w-full relative">
+                <ul role="list" class="relative grid grid-cols-2 lg:grid-cols-3 gap-0.5 " id="roadmap-cards" >
+                    <li class=" flex flex-col cursor-pointer rounded-lg group" id='card-1' onclick="handleRoadmapElement(this.id)">
+                    <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                        <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">01</span></p>
+                        <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide ">
+                            PRESALE AND PUBLIC MINT ON JANUARY . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </span>
+                            </p>
+                    </div>
+                    <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100" style=" background-image: url('https://images.pexels.com/photos/7391654/pexels-photo-7391654.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');">
+                            
+                    </div>
+                    </li>
+                    <li class="flex flex-col cursor-pointer rounded-lg group" id='card-2' onclick="handleRoadmapElement(this.id)">
+                        <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                            <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">02</span></p>
+                            <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide">RENTALZ.IO WILL BEGIN ACQUIRING THE  . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100 " style="background-position: center;background-image: url('https://images.unsplash.com/photo-1580654712603-eb43273aff33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60');">  
+                        </div>
+                    </li>
+                    <li class=" flex flex-col cursor-pointer rounded-lg group" id='card-3' onclick="handleRoadmapElement(this.id)">
+                        <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                            <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">03</span></p>
+                            <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide">AFTER REVEAL ON JANUARY 24TH, STAKING AND REWARDS . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100 " style="background-position: center;background-image: url('https://images.unsplash.com/photo-1517779894653-4c49f68b4d66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1847&q=80');">  
+                        </div>
+                    </li>
+                    <li class=" flex flex-col cursor-pointer rounded-lg group" id='card-4' onclick="handleRoadmapElement(this.id)">
+                        <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                            <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">04</span></p>
+                            <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide">WE WILL BEGIN ONBOARDING STAFF FOR OUR . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100 " style="background-position: center;background-image: url('https://images.unsplash.com/photo-1612069811748-d3b2d1db1858?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1177&q=80');">  
+                        </div>
+                    </li>
+                    <li class=" flex flex-col cursor-pointer rounded-lg group" id='card-5' onclick="handleRoadmapElement(this.id)">
+                        <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                            <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">05</span></p>
+                            <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide">BEGIN LAUNCHING OUR OTHER COLLECTIONS . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100 " style="background-position: center;background-image: url('https://images.pexels.com/photos/10471552/pexels-photo-10471552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');">  
+                        </div>
+                    </li>
+                    <li class=" flex flex-col cursor-pointer rounded-lg group" id='card-6' onclick="handleRoadmapElement(this.id)">
+                        <div class="w-full bg-transparent p-2 sm:p-5 flex-grow" style="background-color: rgba(63, 22, 52, 0.5);">
+                            <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">06</span></p>
+                            <p  class="text-white text-xs sm:text-xl mt-2 tracking-wide">WE WILL BEGIN INTRODUCING OTHER SECRET BENEFITS  . . .
+                                <span 
+                                    class="hidden sm:inline-block  opacity-0  transform  duration-300 group-hover:opacity-100 group-hover:translate-x-1  "
+                                    >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-6 w-6" fill="none" viewBox="0 0 26 12" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="w-full h-28 sm:h-40 bg-cover opacity-90 group-hover:opacity-100 " style="background-position: center;background-image: url('https://images.unsplash.com/photo-1512311724588-1296541df27c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');">  
+                        </div>
+                    </li>
+                </ul>
+                <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-1' style="height: 100%;"  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12  sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">01</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        PRESALE AND PUBLIC MINT ON JANUARY 22ND AT 0.22ETH
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-position: right;background-image: url(https://images.pexels.com/photos/7391654/pexels-photo-7391654.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-1')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+                 <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-2'  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12  sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">02</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        RENTALZ.IO WILL BEGIN ACQUIRING THE COMMUNITY EXOTIC CAR FLEET WITHIN 30 DAYS OF OUR MINT. WE WILL HOLD A VOTING PROCESS FOR VARIFIED NFT HOLDERS AFTER MINT WHERE YOU WILL GET TO VOTE TOGETHER TO BUILD OUT ONE OF THE LAMBORGHINIS (COLOR, TRIM, MODEL, ETC.)
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-image: url('https://images.unsplash.com/photo-1580654712603-eb43273aff33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60');">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-2')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+                 <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-3'  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12   sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">03</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        AFTER REVEAL ON JANUARY 24TH, STAKING AND REWARDS DASHBOARD WILL BE RELEASED ON THE OWNER'S PLATFORM ON OUR WEBSITE, RENTALZ.IO, AND HOLDERS CAN BEGIN STAKING THEIR NFT'S
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-image: url(https://images.unsplash.com/photo-1517779894653-4c49f68b4d66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1847&q=80);">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-3')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+                 <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-4'  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12  sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">04</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        WE WILL BEGIN ONBOARDING STAFF FOR OUR UPCOMING CONCIERGE SERVICE WHICH WILL ONLY BE AVAILABLE IN PRIVATE CHANNELS FOR VERIFIED HOLDERS. THE FOUNDERS EXISTING NETWORK WILL BE UTILIZED TO DEVELOP A WORLD CLASS CONCIERGE SERVICE FOR OUR COMMUNITY THAT WILL PROVIDE SERVICES IN THE CITIES ALL OVER THE COUNTRY AND EVENTUALLY THE GLOBE!
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-image: url(https://images.unsplash.com/photo-1612069811748-d3b2d1db1858?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1177&q=80);">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-4')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+                 <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-5'  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12  sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">05</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        BEGIN LAUNCHING OUR OTHER COLLECTIONS. COMMUNITY MEMBERS WILL GET TO VOTE ON THIS PROCESS AND CHOOSE WHICH ASSETS WE ACQUIRE IN FUTURE COLLECTIONS AND WHICH CITIES WE EXPAND TO. OUR GOAL IS TO BUILD OUT A NETWORK OF REAL WORLD ASSETS AND EXPERIENCES ALL OVER THE COUNTRY, AND THEN THE WORLD, THAT OUR COMMUNITY WILL HAVE ACCESS TO.
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-image: url(https://images.pexels.com/photos/10471552/pexels-photo-10471552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-5')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+                 <div class="z-50 absolute top-0 h-full w-full bg-transparent transform transition-all duration-500 ease-in-out scale-0" id='phase-card-6'  >
+                    <div class="h-full w-full sm:flex sm:grid-cols-2 relative">                            
+                                <div class="w-full h-1/2 sm:h-full bg-transparent p-5 sm:p-12  sm:col-span-1"
+                                    style="background-color: rgba(63, 22, 52, 0.5);">
+                                    <p class="text-color-gradient font-semibold text-xl sm:text-4xl ">Phase <span class="text-2xl sm:text-5xl">06</span></p>
+                                    <p  class="text-white text-sm sm:text-xl mt-3 tracking-wide ">
+                                        WE WILL BEGIN INTRODUCING OTHER SECRET BENEFITS FOR OUR HOLDERS. ASIDE FROM RENTING THE ASSETS RENTALZ.IO ACQUIRES. YOU WILL BE ABLE TO USE YOUR REWARDS POINTS FOR MANY OTHER REAL-WORLD BENEFITS SO STAY TUNED FOR MORE DETAILS.
+                                     </p>
+                                </div>
+                            
+                            <div class="h-1/2 sm:h-full w-full bg-cover sm:relative sm:col-span-1"
+                                style="background-image: url(https://images.unsplash.com/photo-1512311724588-1296541df27c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);">
+                             <div 
+                                class="h-12 w-12 rounded-full absolute top-2 right-2 flex justify-center items-center cursor-pointer "
+                                style="background-color: rgba(0, 0, 0, 0.5);" onclick="handleRoadmapElement('card-6')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transform hover:scale-105 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                             </div>
+                            </div>
+                    </div>
+                 </div>
+            </div>
+            </div>
+        </div>
+  
+    </section>
+
+    <div class="social-icons fixed h-auto bottom-14 right-6 sm:right-14 z-50">
+        <div class="flex flex-col space-y-2">
+            <a href="https://twitter.com" target="_blank">
+                <div
+                    class="border-2 border-white h-8 w-8 p-1 flex justify-center items-center cursor-pointer rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="18" height="18" viewBox="0 0 18 24">
+                        <path
+                            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                    </svg>
+                </div>
+            </a>
+            <a href="https://instagram.com" target="_blank">
+                <div
+                    class="border-2 border-white h-8 w-8 p-1 flex justify-center items-center cursor-pointer rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="18" height="18" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </div>
+            </a>
+            <a href="https://discord.com" target="_blank">
+                <div
+                    class="border-2 border-white h-8 w-8 p-1 flex justify-center items-center cursor-pointer rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30"
+                        style=" fill:#fff;">
+                        <path
+                            d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z">
+                        </path>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <section class="flex items-center justify-center">
+        <div class="container max-w-7xl mx-auto ">
+            <p class="ml-4 text-white px-4 " style="font-size: 15px;font-weight: 500;">Copyright 2022 rentalz.io</p>
+        </div>
+    </section>
+
+    <div id="set-height"></div>
+
+    <!-- <video id="v0" tabindex="0" preload data-start="@data-time: 0" data-end="@data-time: 1">
+        <source type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;" src="bg.mp4">
+        </source>
+    </video> -->
+    <canvas id="hero-lightpass" ></canvas>
+
+    <script src="js/sticky.js"></script>
+    <script src="js/frameAnimation.js"></script>
+    <!-- <script src="js/scroll.js"></script> -->
+
+    <!-- <script>
+
+        enterView({
+            selector: 'section',
+            enter: function (el) {
+                el.classList.add('entered');
+            }
+        })
+
+        var frameNumber = 0, // start video at frame 0
+            // lower numbers = faster playback
+            playbackConst = 300,
+            // get page height from video duration
+            setHeight = document.getElementById("set-height"),
+            // select video element         
+            vid = document.getElementById('v0');
+        // var vid = $('#v0')[0]; // jquery option
+
+        // dynamically set the page height according to video length
+        vid.addEventListener('loadedmetadata', function () {
+            setHeight.style.height = Math.floor(vid.duration) * playbackConst + "px";
+        });
+
+
+        // Use requestAnimationFrame for smooth playback
+        function scrollPlay() {
+            var frameNumber = window.pageYOffset / playbackConst;
+            vid.currentTime = frameNumber;
+            window.requestAnimationFrame(scrollPlay);
+        }
+
+        window.requestAnimationFrame(scrollPlay);
+
+    </script> -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+
+    <script src="./js/slideInAnimation.js"></script>
+</div>
+</body>
+
+</html>
+
+<!-- https://sf-5.storage.dev/public/app/blue_lambo.jpg
+https://images.unsplash.com/photo-1580654712603-eb43273aff33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80 -->
